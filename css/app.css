@@ -221,6 +221,14 @@ button {
     padding: 0 0 0.5rem;
 }
 
+.invite-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 1.75rem);
+    padding-bottom: calc(var(--nav-h) + 1.75rem);
+}
+
 .invite-panel {
     width: 100%;
     margin: 0;
@@ -233,7 +241,8 @@ button {
 }
 
 #details,
-#whenwhere {
+#whenwhere,
+#venue {
     scroll-margin-top: 1.5rem;
 }
 
@@ -629,7 +638,45 @@ button {
 
 .gold-sheet--card {
     width: min(34rem, calc(100% - 1.25rem));
-    margin: 0 auto calc(var(--nav-h) + 1.75rem);
+    margin: 0;
+}
+
+.gold-sheet--card .gold-sheet__plate {
+    object-position: top center;
+}
+
+.gold-sheet--venue {
+    display: grid;
+}
+
+.gold-sheet--venue > * {
+    grid-area: 1 / 1;
+}
+
+.gold-sheet--venue .gold-sheet__plate {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+}
+
+.gold-sheet--venue .gold-sheet__body {
+    position: relative;
+    z-index: 1;
+    align-self: start;
+    width: 100%;
+    padding: clamp(1.45rem, 4vw, 1.9rem) clamp(1.15rem, 4.2vw, 2.15rem) clamp(1.75rem, 5vw, 2.25rem);
+    text-align: center;
+}
+
+.gold-sheet--venue .venue {
+    margin-top: 0;
+}
+
+.gold-sheet--venue .date-line {
+    margin-top: 1rem;
 }
 
 .gold-sheet--card .gold-sheet__body {
@@ -748,17 +795,19 @@ button {
 }
 
 .schedule article {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
     align-items: baseline;
-    gap: 0.75rem;
-    padding: 0.65rem 0;
-    border-bottom: 1px solid rgba(138, 106, 50, 0.28);
+    gap: 0.5rem;
+    padding: 0.5rem 0;
     text-align: left;
 }
 
-.schedule article:last-child {
-    border-bottom: 0;
+.schedule-line {
+    flex: 1 1 auto;
+    min-width: 1.25rem;
+    border-bottom: 1px solid var(--burgundy-deep);
+    margin-bottom: 0.18em;
+    opacity: 0.55;
 }
 
 .schedule h3 {
