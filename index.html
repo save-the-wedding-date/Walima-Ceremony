@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Walima Ceremony: Hamza &amp; Fatima</title>
+    <meta name="theme-color" content="#5f3733">
+    <meta name="color-scheme" content="light">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Allura&amp;family=Amiri:wght@400;700&amp;family=Forum&amp;family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css" integrity="sha256-yIDrPSXHZdOZhAqiBP7CKzIwMQmRCJ8UeB8Jo17YC4o=" crossorigin="anonymous">
+    <link rel="preload" as="image" href="./assets/images/bg-texture.webp" type="image/webp" media="(orientation: portrait)">
+    <link rel="preload" as="image" href="./assets/images/bg-tablet.webp" type="image/webp" media="(orientation: landscape) and (max-width: 1279px)">
+    <link rel="preload" as="image" href="./assets/images/bg-desktop.webp" type="image/webp" media="(min-width: 1280px)">
+    <link rel="preload" as="image" href="./assets/images/golden.webp" type="image/webp">
+    <link rel="stylesheet" href="./css/app.css">
+</head>
+<body>
+
+    <div class="site-bg" aria-hidden="true">
+        <div class="site-bg__texture"></div>
+    </div>
+
+    <nav class="nav-bottom" aria-label="Sections">
+        <a href="#home"><i class="fas fa-home"></i>Home</a>
+        <a href="#details"><i class="fa-solid fa-heart"></i>Details</a>
+        <a href="#whenwhere"><i class="fa-solid fa-calendar-check"></i>Programme</a>
+    </nav>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-inner">
+                <article class="gold-sheet gold-sheet--cover">
+                    <img class="gold-sheet__plate" src="./assets/images/golden.webp" alt="" width="1670" height="2800">
+                    <div class="gold-sheet__body">
+                        <p class="invitation-title">Walima</p>
+                        <p class="subtitle">Sunday, 25th October 2026 · at 1:30 PM</p>
+                        <div class="actions">
+                            <a
+                                class="btn"
+                                href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=Walima%3A%20Hamza%20And%20Fatima&amp;dates=20261025T133000%2F20261025T163000&amp;ctz=Asia%2FKarachi&amp;details=Walima%20reception%20of%20Hamza%20Bin%20Shoaib%20%26%20Fatima%20Ijaz&amp;location=Faletti%27s%20Hotel%2C%2024%20Egerton%20Rd%2C%20Garhi%20Shahu%2C%20Lahore"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <i class="fa-solid fa-calendar-plus"></i>Add to Google Calendar
+                            </a>
+                            <a class="btn" href="./assets/Walima-Ceremony-Card.pdf" download="Walima-Ceremony-Card.pdf">
+                                <i class="fa-solid fa-download"></i>Download Card
+                            </a>
+                        </div>
+                    </div>
+                </article>
+                <div class="scroll-hint">
+                    <div class="mouse" aria-hidden="true"></div>
+                    <p class="muted" style="margin: 0; font-size: 0.85rem;">Scroll Down</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="page-bg">
+            <article class="gold-sheet gold-sheet--card">
+                <img class="gold-sheet__plate" src="./assets/images/golden.webp" alt="" width="1670" height="2800">
+                <div class="gold-sheet__body invite-panel">
+                <section class="sheet-block" id="details" data-reveal>
+                        <p class="arabic bismillah">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+                        <p class="muted blessing">In The Name Of Allah, The Most Gracious, The Ever Merciful</p>
+                        <p class="welcome-line">With hearts full of joy, Welcome to reception of</p>
+
+                        <div class="pair">
+                            <div>
+                                <h2>Fatima Ijaz</h2>
+                            </div>
+                            <p class="with-label amp-with">&amp;</p>
+                            <div>
+                                <h2>Hamza Bin Shoaib</h2>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="sheet-block" id="whenwhere" data-reveal>
+                        <h2 class="script programme-title">Programme</h2>
+                        <p class="arabic insha">إن شاء الله</p>
+
+                        <div class="countdown" id="date" data-date="2026-10-25 13:30:00">
+                            <div><strong id="day">0</strong><span>Days</span></div>
+                            <div><strong id="hour">0</strong><span>Hours</span></div>
+                            <div><strong id="minute">0</strong><span>Mins</span></div>
+                            <div><strong id="seconds">0</strong><span>Secs</span></div>
+                        </div>
+
+                        <div class="schedule">
+                            <article>
+                                <h3>Reception Of Guests</h3>
+                                <p class="muted">1:30 pm</p>
+                            </article>
+                            <article>
+                                <h3>Lunch</h3>
+                                <p class="muted">2:00 pm</p>
+                            </article>
+                        </div>
+
+                        <div class="venue">
+                            <p class="venue-name">Venue</p>
+                            <p class="display venue-hotel">Faletti's Hotel</p>
+                            <p class="venue-address">
+                                24 Egerton Rd, Garhi Shahu<br>
+                                Lahore
+                            </p>
+                            <a
+                                class="btn"
+                                href="https://www.google.com/maps/search/?api=1&amp;query=Faletti%27s+Hotel+24+Egerton+Road+Lahore"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <i class="fa-solid fa-map-location-dot"></i>Open in Google Maps
+                            </a>
+                        </div>
+
+                        <p class="display date-line">SUN | 25TH OCTOBER, 2026</p>
+                    </section>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <div class="welcome" id="welcome">
+        <div class="welcome-card">
+            <div class="gold-plate gold-plate--welcome">
+                <img src="./assets/images/golden.webp" alt="" width="1670" height="2800">
+                <p class="invitation-title">Walima</p>
+            </div>
+            <div class="name-stack">
+                <h1>Fatima Ijaz</h1>
+                <p class="with-label">&amp;</p>
+                <h1>Hamza Bin Shoaib</h1>
+            </div>
+            <button type="button" class="btn btn--solid" onclick="util.openinvite(this)">
+                <i class="fa-solid fa-envelope-open"></i>Open Invitation
+            </button>
+        </div>
+    </div>
+
+    <button type="button" id="music" class="btn-music" onclick="util.play(this)" data-status="true" data-url="./assets/music/sound.mp3" aria-label="Toggle music">
+        <i class="fa-solid fa-circle-pause"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-confetti@2.12.0/tsparticles.confetti.bundle.min.js" integrity="sha256-XG5M9shcLLpu8ct5bVbu6lLVzLpfZChl+csxdyLVP18=" crossorigin="anonymous"></script>
+    <script src="./js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+node_modules/
+.tmp-bg/
+.DS_Store
+Thumbs.db
+*.log
+
+# Source masters — too large for git; site uses converted webp/jpg
+assets/images/3.png
+assets/images/4.png
+assets/images/Walima Card.png
