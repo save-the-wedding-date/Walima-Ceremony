@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Walima Ceremony: Hamza &amp; Fatima</title>
+    <title>Walima Ceremony: Fatima &amp; Hamza</title>
     <meta name="theme-color" content="#5f3733">
     <meta name="color-scheme" content="light">
 
@@ -135,19 +135,37 @@
     </main>
 
     <div class="welcome" id="welcome">
-        <div class="welcome-card">
-            <div class="gold-plate gold-plate--welcome">
-                <img src="./assets/images/golden.webp" alt="" width="1670" height="2800">
-                <p class="invitation-title">Walima</p>
+        <div class="envelope-stage">
+            <div class="envelope is-closed" id="envelope" aria-label="Wedding invitation envelope">
+                <div class="envelope__well">
+                    <div class="envelope__letter" id="envelope-letter">
+                        <div class="gold-plate gold-plate--envelope">
+                            <img src="./assets/images/golden.webp" alt="" width="1670" height="2800">
+                            <p class="invitation-title">Walima</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="envelope__pocket" aria-hidden="true">
+                    <span class="envelope__panel envelope__panel--left"></span>
+                    <span class="envelope__panel envelope__panel--right"></span>
+                    <span class="envelope__panel envelope__panel--bottom"></span>
+                </div>
+                <div class="envelope__flap" aria-hidden="true">
+                    <span class="envelope__flap-edge" aria-hidden="true"></span>
+                </div>
+                <button
+                    type="button"
+                    class="envelope__seal"
+                    id="envelope-seal"
+                    onclick="util.openinvite(this)"
+                    aria-label="Break the seal and open the invitation"
+                >
+                    <span class="envelope__seal-ring" aria-hidden="true"></span>
+                    <span class="envelope__seal-initials">
+                        <span>F</span><span class="envelope__seal-amp">&amp;</span><span>H</span>
+                    </span>
+                </button>
             </div>
-            <div class="name-stack">
-                <h1>Fatima Ijaz</h1>
-                <p class="with-label">&amp;</p>
-                <h1>Hamza Bin Shoaib</h1>
-            </div>
-            <button type="button" class="btn btn--solid" onclick="util.openinvite(this)">
-                <i class="fa-solid fa-envelope-open"></i>Open Invitation
-            </button>
         </div>
     </div>
 

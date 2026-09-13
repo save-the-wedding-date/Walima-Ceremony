@@ -908,7 +908,7 @@ button {
     text-align: center;
     padding: clamp(1rem, 3vh, 2rem) clamp(0.85rem, 3vw, 1.5rem);
     overflow: hidden;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    transition: opacity 0.65s ease, visibility 0.65s ease;
 }
 
 .welcome.is-hiding {
@@ -917,27 +917,468 @@ button {
     pointer-events: none;
 }
 
-.welcome-card {
+.welcome:has(.envelope.is-opening),
+.welcome:has(.envelope.is-open) {
+    overflow: visible;
+}
+
+/* —— Open invitation: golden envelope + burgundy seal —— */
+.envelope-stage {
+    --env-w: min(94vw, 36rem);
+    --env-h: calc(var(--env-w) * 0.62);
+    --env-radius: 0.45rem;
+    --env-gold: #c9a45c;
+    --env-gold-mid: #b8924a;
+    --env-gold-deep: #8a6a32;
+    --env-gold-light: #e0c278;
+    --env-gold-shadow: #6e5424;
+    --env-foil: url("../assets/images/envelope-gold-texture.webp");
+    --flap-ms: 700ms;
+    --card-ms: 1450ms;
     position: relative;
     z-index: 1;
-    width: min(94vw, 44rem);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: clamp(0.55rem, 2vh, 1.15rem);
-    padding: clamp(0.35rem, 1.5vh, 0.85rem) 0;
+    width: var(--env-w);
+    padding-bottom: 3.25rem;
     animation: rise 1s ease both;
 }
 
-.welcome .name-stack {
-    margin: 0.15rem 0;
+.envelope {
+    position: relative;
+    width: var(--env-w);
+    height: var(--env-h);
+    margin: 0 auto;
+    border-radius: var(--env-radius);
+    background-color: var(--env-gold-shadow);
+    background-image:
+        linear-gradient(160deg, rgba(255, 236, 190, 0.14), rgba(60, 40, 10, 0.35)),
+        var(--env-foil);
+    background-size: cover, cover;
+    background-position: center, center;
+    box-shadow:
+        0 1px 0 rgba(255, 236, 190, 0.22) inset,
+        0 18px 40px rgba(20, 8, 10, 0.4);
+    perspective: 900px;
+    /* Round all corners while closed; open needs visible overflow for the flap */
+    overflow: hidden;
 }
 
-.welcome .btn--solid {
-    margin-top: 0.25rem;
-    padding: clamp(0.85rem, 2.2vh, 1.05rem) clamp(1.35rem, 4vw, 1.85rem);
-    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+.envelope.is-opening,
+.envelope.is-open {
+    /* Sharp top edge so the hinge meets the pocket — no rounded notch gap */
+    border-radius: 0 0 var(--env-radius) var(--env-radius);
+    overflow: visible;
+}
+
+/* Clips card inside the shell. When open, only the TOP may spill out — never the bottom. */
+.envelope__well {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: var(--env-radius);
+    overflow: hidden;
+    clip-path: inset(0 round var(--env-radius));
+}
+
+.envelope.is-opening .envelope__well {
+    border-radius: 0 0 var(--env-radius) var(--env-radius);
+    clip-path: inset(0);
+}
+
+.envelope.is-open .envelope__well {
+    overflow: visible;
+    /* Expand clip upward only; bottom/sides stay sealed to the envelope edge */
+    clip-path: inset(-180% 0 0 0);
+    border-radius: 0 0 var(--env-radius) var(--env-radius);
+    /* Above the open flap (0), below the front pocket (3) */
+    z-index: 2;
+}
+
+.envelope__letter {
+    position: absolute;
+    left: 50%;
+    /* Top of card near the opening — Walima face exits first; excess hangs below (clipped) */
+    top: 4%;
+    bottom: auto;
+    width: 72%;
+    z-index: 1;
+    transform: translate(-50%, 0);
+    transition: transform var(--card-ms) cubic-bezier(0.33, 0.1, 0.25, 1);
+    pointer-events: none;
+    will-change: transform;
+}
+
+/*
+ * Stack when open: open flap (0) → card/well (2) → front pocket (3)
+ * Card slides in FRONT of the folded-back top flap, still UNDER the pocket.
+ */
+.envelope.is-open .envelope__letter {
+    transform: translate(-50%, calc(-1 * var(--env-h) * 0.95));
+}
+
+.envelope__letter .gold-plate--envelope {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    aspect-ratio: 1670 / 2800;
+    border-radius: 0.85rem;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(20, 8, 10, 0.32);
+}
+
+.envelope__letter .gold-plate--envelope img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    object-position: center top;
+    filter: none;
+}
+
+.envelope__letter .gold-plate--envelope .invitation-title {
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+}
+
+.envelope__pocket {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: var(--env-radius);
+    overflow: hidden;
+}
+
+.envelope.is-opening .envelope__pocket,
+.envelope.is-open .envelope__pocket {
+    /* Keep bottom round; square the top so side flaps meet the open lid cleanly */
+    border-radius: 0 0 var(--env-radius) var(--env-radius);
+}
+
+.envelope__panel {
+    position: absolute;
+    inset: 0;
+    background-size: cover, cover, cover;
+    background-position: center, center, center;
+}
+
+/* Side flaps — nearly even gold; soft valley only near the center meet */
+.envelope__panel--left {
+    background-image:
+        linear-gradient(
+            to top left,
+            rgba(55, 35, 10, 0.2) 0%,
+            transparent 26%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(255, 242, 205, 0.22) 0%,
+            transparent 62%
+        ),
+        var(--env-foil);
+    clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+}
+
+.envelope__panel--right {
+    background-image:
+        linear-gradient(
+            to top right,
+            rgba(55, 35, 10, 0.22) 0%,
+            transparent 26%
+        ),
+        linear-gradient(
+            225deg,
+            rgba(255, 236, 190, 0.14) 0%,
+            transparent 62%
+        ),
+        var(--env-foil);
+    clip-path: polygon(100% 0%, 50% 50%, 100% 100%);
+}
+
+/*
+ * Bottom flap — match reference: same foil family as sides,
+ * only a soft upper valley (no dark filled triangle).
+ */
+.envelope__panel--bottom {
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(70, 45, 12, 0.2) 0%,
+            rgba(70, 45, 12, 0.06) 14%,
+            transparent 32%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(255, 236, 190, 0.06) 0%,
+            transparent 45%
+        ),
+        var(--env-foil);
+    clip-path: polygon(0% 100%, 50% 50%, 100% 100%);
+}
+
+/*
+ * Crease shadow follows the flap outline exactly (drop-shadow + clip-path).
+ * Only while closed — filter is cleared before the lid rotates.
+ */
+.envelope.is-closed .envelope__flap {
+    filter: drop-shadow(0 3px 1.5px rgba(40, 24, 6, 0.42))
+        drop-shadow(0 6px 5px rgba(40, 24, 6, 0.18));
+}
+
+.envelope.is-opening .envelope__flap,
+.envelope.is-open .envelope__flap {
+    filter: none;
+}
+
+/* Top flap — brighter body, soft tip; thin edge rim like reference */
+.envelope__flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    background-color: var(--env-gold);
+    background-image:
+        radial-gradient(
+            ellipse 85% 50% at 50% 12%,
+            rgba(255, 246, 215, 0.3) 0%,
+            transparent 68%
+        ),
+        linear-gradient(
+            180deg,
+            rgba(255, 236, 190, 0.16) 0%,
+            transparent 55%,
+            rgba(70, 45, 12, 0.18) 100%
+        ),
+        var(--env-foil);
+    background-size: cover, cover, cover;
+    background-position: center, center, center top;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 53%);
+    transform-origin: top center;
+    transform: rotateX(0deg);
+    transition:
+        transform var(--flap-ms) ease,
+        z-index var(--flap-ms),
+        filter 0.2s ease;
+}
+
+/* Rim: highlight + valley glued to the same diagonal as the flap edge */
+.envelope__flap-edge {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(
+            to bottom right,
+            transparent calc(50% - 2px),
+            rgba(255, 248, 220, 0.88) calc(50% - 0.35px),
+            rgba(255, 244, 210, 0.45) 50%,
+            rgba(45, 26, 6, 0.4) calc(50% + 1px),
+            transparent calc(50% + 3.5px)
+        ),
+        linear-gradient(
+            to bottom left,
+            transparent calc(50% - 2px),
+            rgba(255, 248, 220, 0.82) calc(50% - 0.35px),
+            rgba(255, 244, 210, 0.4) 50%,
+            rgba(45, 26, 6, 0.38) calc(50% + 1px),
+            transparent calc(50% + 3.5px)
+        );
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.envelope.is-opening .envelope__flap-edge,
+.envelope.is-open .envelope__flap-edge {
+    opacity: 0;
+}
+
+.envelope.is-opening .envelope__flap {
+    transform: rotateX(180deg);
+    z-index: 5;
+    transition: transform var(--flap-ms) ease;
+}
+
+.envelope.is-open .envelope__flap {
+    transform: rotateX(180deg);
+    /* Behind the card once it starts sliding out */
+    z-index: 0;
+    transition:
+        transform var(--flap-ms) ease,
+        z-index 0.01s linear;
+}
+
+.envelope.is-closed .envelope__flap {
+    transform: rotateX(0deg);
+    z-index: 5;
+    transition:
+        transform var(--flap-ms) 0.55s ease,
+        z-index 1s;
+}
+
+.envelope__seal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 6;
+    display: grid;
+    place-items: center;
+    width: clamp(5rem, 17vw, 6.5rem);
+    height: clamp(5rem, 17vw, 6.5rem);
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 32% 28%, #8a524c 0%, #6b333c 42%, #5f3733 68%, #3a1c1a 100%);
+    box-shadow:
+        0 1px 0 rgba(255, 200, 180, 0.2) inset,
+        0 -4px 8px rgba(20, 5, 5, 0.38) inset,
+        0 5px 0 rgba(58, 28, 26, 0.55),
+        0 12px 28px rgba(20, 8, 10, 0.45),
+        0 0 14px rgba(201, 164, 92, 0.35),
+        0 0 28px rgba(243, 230, 200, 0.2);
+    color: var(--cream);
+    -webkit-tap-highlight-color: transparent;
+    animation: seal-glow 2.4s ease-in-out infinite;
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s cubic-bezier(0.4, 0.0, 0.2, 1),
+        box-shadow 0.28s ease;
+}
+
+.envelope__seal:hover:not(:disabled),
+.envelope__seal:focus-visible:not(:disabled) {
+    transform: translate(-50%, -50%) scale(1.05);
+    animation: seal-glow 1.4s ease-in-out infinite;
+    outline: none;
+}
+
+.envelope__seal:active:not(:disabled) {
+    transform: translate(-50%, -48%) scale(0.96);
+}
+
+.envelope.is-opening .envelope__seal,
+.envelope.is-open .envelope__seal {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.82);
+    animation: none;
+}
+
+.envelope__seal-ring {
+    position: absolute;
+    inset: 16%;
+    border-radius: 50%;
+    border: 1.5px dotted rgba(243, 230, 200, 0.55);
+    box-shadow: 0 0 0 3px rgba(58, 28, 26, 0.25) inset;
+    pointer-events: none;
+}
+
+.envelope__seal-initials {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.14em;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--script);
+    font-size: clamp(0.89rem, 3.23vw, 1.15rem);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+    text-align: center;
+    pointer-events: none;
+    transform: translateX(-3.7%);
+}
+
+.envelope__seal-initials > span {
+    display: block;
+    line-height: 1;
+    color: var(--cream);
+    /* Script optical settle only — keep horizontally centered */
+    transform: translateY(0.08em);
+    animation: seal-initials-glow 2.2s ease-in-out infinite;
+}
+
+.envelope__seal-amp {
+    font-size: 0.82em;
+    opacity: 0.95;
+}
+
+.envelope.is-opening .envelope__seal-initials > span,
+.envelope.is-open .envelope__seal-initials > span {
+    animation: none;
+}
+
+@keyframes seal-glow {
+    0%,
+    100% {
+        box-shadow:
+            0 1px 0 rgba(255, 200, 180, 0.2) inset,
+            0 -4px 8px rgba(20, 5, 5, 0.38) inset,
+            0 5px 0 rgba(58, 28, 26, 0.55),
+            0 12px 28px rgba(20, 8, 10, 0.45),
+            0 0 10px rgba(201, 164, 92, 0.28),
+            0 0 22px rgba(243, 230, 200, 0.14);
+    }
+    50% {
+        box-shadow:
+            0 1px 0 rgba(255, 200, 180, 0.28) inset,
+            0 -4px 8px rgba(20, 5, 5, 0.38) inset,
+            0 5px 0 rgba(58, 28, 26, 0.55),
+            0 14px 32px rgba(20, 8, 10, 0.5),
+            0 0 22px rgba(201, 164, 92, 0.7),
+            0 0 42px rgba(243, 230, 200, 0.4),
+            0 0 64px rgba(201, 164, 92, 0.28);
+    }
+}
+
+@keyframes seal-initials-glow {
+    0%,
+    100% {
+        color: rgba(243, 230, 200, 0.92);
+        text-shadow:
+            0 0 3px rgba(243, 230, 200, 0.35),
+            0 0 8px rgba(201, 164, 92, 0.25),
+            0 1px 0 rgba(20, 5, 5, 0.35);
+    }
+    50% {
+        color: #fff8e8;
+        text-shadow:
+            0 0 6px rgba(255, 248, 230, 0.95),
+            0 0 14px rgba(243, 230, 200, 0.85),
+            0 0 26px rgba(201, 164, 92, 0.75),
+            0 0 40px rgba(201, 164, 92, 0.4),
+            0 1px 0 rgba(20, 5, 5, 0.25);
+    }
+}
+
+.envelope-hint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    font-family: var(--serif);
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+    letter-spacing: 0.06em;
+    color: rgba(243, 230, 200, 0.78);
+    transition: opacity 0.35s ease;
+}
+
+.envelope.is-opening ~ .envelope-hint,
+.envelope.is-open ~ .envelope-hint {
+    opacity: 0;
 }
 
 @media (max-height: 880px) {
@@ -981,9 +1422,8 @@ button {
         width: min(34rem, calc(100% - 1.25rem));
     }
 
-    .gold-plate--welcome {
-        height: min(56dvh, calc(100svh - 15rem));
-        max-width: min(24rem, 32vw);
+    .envelope-stage {
+        --env-w: min(88vw, 40rem);
     }
 }
 
@@ -1009,17 +1449,9 @@ button {
 }
 
 @media (max-height: 720px) {
-    .gold-plate--welcome {
-        height: min(42dvh, calc(100svh - 14rem));
-        max-width: min(58vw, 16rem);
-    }
-
-    .welcome h1 {
-        font-size: clamp(1.8rem, 6vw, 2.6rem);
-    }
-
-    .welcome-card {
-        gap: 0.45rem;
+    .envelope-stage {
+        --env-w: min(90vw, 28rem);
+        padding-bottom: 2.75rem;
     }
 
     .gold-sheet__body {

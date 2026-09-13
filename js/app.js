@@ -33,10 +33,29 @@ const util = (() => {
         }
     };
 
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
     const openinvite = async (button) => {
+        if (button.disabled) return;
         button.disabled = true;
 
         const welcome = document.getElementById("welcome");
+        const envelope = document.getElementById("envelope");
+        if (!welcome || !envelope) return;
+
+        // 1) Seal press → flap opens (CSS). Card stays fully tucked until flap clears.
+        envelope.classList.remove("is-closed");
+        envelope.classList.add("is-opening");
+        button.setAttribute("aria-hidden", "true");
+
+        // Flap: 700ms. Then letter may rise.
+        await wait(720);
+        envelope.classList.add("is-open");
+
+        // 2) Card slide-out: 1450ms (matches --card-ms).
+        await wait(1550);
+
+        // 3) Page reveal — same post-open behavior as before.
         welcome.classList.add("is-hiding");
 
         const musicBtn = document.getElementById("music");
@@ -51,7 +70,7 @@ const util = (() => {
             await confetti({
                 particleCount: 80,
                 spread: 70,
-                origin: { y: 0.75 },
+                origin: { y: 0.72 },
                 colors: ["#5c2a32", "#c9a45c", "#f3e6c8", "#8a6a32"],
             });
         }
